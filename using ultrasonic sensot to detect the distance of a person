@@ -1,0 +1,79 @@
+#include <SoftwareSerial.h>
+SoftwareSerial bluetooth(10, 11); //RX, TX
+#define trigPin 2
+#define echoPin 3
+#define LEDRed 12
+#define LEDYellow 4
+#define LEDGreen 8
+#define soundbuzzer 7
+int sound = 500;
+void setup() 
+{
+  Serial.begin (9600);
+  bluetooth.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(LEDRed, OUTPUT);
+  pinMode(LEDYellow, OUTPUT);
+  pinMode(LEDGreen, OUTPUT);
+  pinMode(soundbuzzer, OUTPUT);
+}
+void loop() 
+{
+  long durationindigit, distance;
+  digitalWrite(trigPin, LOW); 
+  delay(100);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  durationindigit = pulseIn(echoPin, HIGH);
+  distance = (durationindigit/2) / 29.1; 
+  if (distance <= 50)
+  {
+      digitalWrite(LEDGreen, HIGH);
+      Serial.print(distance);
+      Serial.println(" cm ");
+  }
+  else
+  {
+      digitalWrite(LEDGreen, LOW);
+  }
+  if (distance <= 20)
+  {
+    digitalWrite(LEDYellow, HIGH);
+    digitalWrite(LEDGreen ,LOW);
+    Serial.print(distance);
+    Serial.println(" cm ");
+  }
+  else
+  {
+    digitalWrite(LEDYellow,LOW);
+    digitalWrite(LEDGreen, LOW);
+  }
+  if (distance <= 5)
+  {
+    digitalWrite(LEDYellow, LOW);
+    digitalWrite(LEDRed, HIGH);
+    delay(10);
+    digitalWrite(LEDRed, LOW);
+    delay(10);
+  }
+  else
+  {
+    digitalWrite(LEDRed,LOW);
+    digitalWrite(LEDYellow, LOW);
+    digitalWrite(LEDGreen, LOW);
+  } 
+  if (distance > 5 || distance <= 0)
+  {
+    Serial.print(distance);
+    Serial.print(" cm ");
+  }
+  else
+  {
+    bluetooth.print(" Outside the permissible range of distances ");
+    bluetooth.print(";");
+    tone(7, sound, 1000);
+    delay(100);
+  }
+}

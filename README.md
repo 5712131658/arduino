@@ -11,3 +11,6 @@ Project 2 :
 
 We use an ultrasonic sensor to determine the distance of person and if the person is at a certaion distance the leds will go off and if they are too close the buzzer and the red led will also go off there is also a lcd to tell the user how far the person is 
 
+Project 3 :
+
+We use a tilt sensor to determine if a person has fallen , is sitting or standing 
